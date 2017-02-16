@@ -97,8 +97,18 @@ def main():
     # TOPIC_TO_PUBLISH = SERVER_NAME + "/raspberrypi/" + DEV_ID + "/publisher"
     TOPIC_TO_PUBLISH = SERVER_NAME + "/raspberrypi/" + DEV_ID + "/temperature"
 
+    global TOPIC_TO_PUBLISH_VIRTUAL_FIREALARM
+    # TOPIC_TO_PUBLISH_VIRTUAL_FIREALARM = SERVER_NAME + "/raspberrypi/" + DEV_ID + "/publisher"
+    TOPIC_TO_PUBLISH_VIRTUAL_FIREALARM = SERVER_NAME + "/virtual_firealarm/" + DEV_ID
+
+    global TOPIC_TO_PUBLISH_BRAIN_WAVE_INFO
+    # TOPIC_TO_PUBLISH_VIRTUAL_FIREALARM = SERVER_NAME + "/raspberrypi/" + DEV_ID + "/publisher"
+    TOPIC_TO_PUBLISH_BRAIN_WAVE_INFO = SERVER_NAME + "/raspberrypi/" + DEV_ID + "/brainwave_info"
+
     print ("MQTT_LISTENER: MQTT_ENDPOINT is " + str(MQTT_ENDPOINT))
     print ("MQTT_LISTENER: MQTT_TOPIC is " + TOPIC_TO_SUBSCRIBE)
+
+
 
     global mqttClient
     mqttClient = mqtt.Client()
@@ -130,6 +140,5 @@ def main():
 
 
 if __name__ == '__main__':
-    iotUtils.setUpGPIOPins()
     main()
 

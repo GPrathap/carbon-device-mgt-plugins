@@ -62,6 +62,12 @@ CONTROLLER_CONTEXT = configParser.get('Device-Configurations', 'controller-conte
 MQTT_SUB_TOPIC = configParser.get('Device-Configurations', 'mqtt-sub-topic').format(owner = DEVICE_OWNER, deviceId = DEVICE_ID)
 MQTT_PUB_TOPIC = configParser.get('Device-Configurations', 'mqtt-pub-topic').format(owner = DEVICE_OWNER, deviceId = DEVICE_ID)
 DEVICE_INFO = '{{"event":{{"metaData":{{"owner":"' + DEVICE_OWNER + '","type":"raspberrypi","deviceId":"' + DEVICE_ID + '","time":{}}},"payloadData":{{"temperature":{:.2f}}}}}}}'
+BRAIN_WAVE_INFO = '{{"event":{{"metaData":{{"owner":"' + DEVICE_OWNER + '","type":"raspberrypi","deviceId":"' + DEVICE_ID \
+                  + '","time":{}}},"payloadData":{{"PoorSignalLevel":{:.0f},"meditationLevel":{:.0f},"attentionLevel":{:.0f}, ' \
+                    '"EEGPowersDelta":{:.0f},"EEGPowersTheta":{:.0f},"EEGPowersLowAlpha":{:.0f},' \
+                    '"EEGPowersHighAlpha":{:.0f}, "EEGPowersLowBeta":{:.0f}"EEGPowersDelta":{:.0f},"EEGPowersTheta":{:.0f},"EEGPowersLowAlpha":{:.0f},"EEGPowersHighAlpha":{:.0f},' \
+                    ' "EEGPowersLowBeta":{:.0f}, "EEGPowersHingBeta":{:.0f}, , "EEGPowersLowGamma":{:.0f}, , "EEGPowersMidGamma":{:.0f}}}}}}}'
+
 
 # '{"owner":"' + DEVICE_OWNER + '","deviceId":"' + DEVICE_ID + '","temperature":'
 HTTPS_EP = configParser.get('Device-Configurations', 'https-ep')
@@ -117,41 +123,6 @@ def initGPIOModule():
         import RPi.GPIO as GPIO
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#       Get the IP-Address of the interface via which the RPi is connected
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def getDeviceIP():
-    # for POSIX system like MacOS and Linux
-    if os.name != "nt":
-        import commands
-        rPi_IP = commands.getoutput("ifconfig | grep inet | grep -v inet6 | grep -v 127.0.0.1 | awk '{print $2}'").split('\n')
-        if len(rPi_IP) > 0:
-            print "------------------------------------------------------------------------------------"
-            print "IOT_UTILS: IP Addresses of RaspberryPi: " + str(rPi_IP)
-            print "IOT_UTILS: IP Address used for HTTP Server: " + rPi_IP[0]
-            print "------------------------------------------------------------------------------------"
-            if len(rPi_IP[0].split(":"))>1:
-                return rPi_IP[0].split(":")[1]
-            else:
-                return rPi_IP[0]
-
-    # for windows systems
-    else:
-        from subprocess import check_output
-        rPi_IP = check_output("for /f \"tokens=14\" %a in ('ipconfig ^| findstr \"IPv4\" ^| findstr /v \"127.0.0.1\"') do echo %a", shell=True).decode()
-        rPi_IP = rPi_IP.replace('\r', '')
-        rPi_IP = rPi_IP.split('\n')
-
-        for IPs in rPi_IP:
-            if IPs != '' and len(aps) < 16:
-                print("------------------------------------------------------------------------------------")
-                print("IOT_UTILS: IP Address used for HTTP Server: " + IPs)
-                print("------------------------------------------------------------------------------------")
-                return IPs
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       Get the port which http server is listening on
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -161,31 +132,12 @@ def getHTTPServerPort():
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#       Set the GPIO pin modes for the ones to be read
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def setUpGPIOPins():
-    import RPi.GPIO as GPIO
-    try:
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BOARD)
-    except Exception as e:
-        print "IOT_UTILS: Exception at 'GPIO.setmode'"
-        print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-        pass
-
-    GPIO.setup(BULB_PIN, GPIO.OUT)
-    GPIO.output(BULB_PIN, False)
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #       The Main method of the server script
 #           This method is invoked from RaspberryStats.py on a new thread
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def main():
     global HOST_NAME
     # HOST_NAME = getDeviceIP()
-    if running_mode.RUNNING_MODE == 'N':
-        setUpGPIOPins()
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

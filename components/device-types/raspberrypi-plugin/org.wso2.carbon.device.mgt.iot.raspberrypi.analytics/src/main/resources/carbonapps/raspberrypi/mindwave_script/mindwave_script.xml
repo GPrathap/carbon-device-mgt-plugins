@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<Analytics>
+  <Name>mindwave_script</Name>
+    <Script>
+      CREATE TEMPORARY TABLE MindWaveData USING CarbonAnalytics OPTIONS(tableName "ORG_WSO2_IOT_MINDWAVE");
+      CREATE TEMPORARY TABLE MindWaveSummaryData USING CarbonAnalytics OPTIONS (tableName "MIND_WAVE_SUMMARY", schema "owner STRING -i, deviceId STRING -i, time LONG -i,poorSignalLevel FLOAT -i,meditationLevel FLOAT -i, attentionLevel FLOAT -i, EEGPowersDelta FLOAT -i,EEGPowersTheta FLOAT -i,EEGPowersLowAlpha FLOAT -i,EEGPowersHighAlpha FLOAT -i,EEGPowersLowBeta FLOAT -i,EEGPowersHighBeta FLOAT -i,EEGPowersLowGamma FLOAT -i,EEGPowersMidGamma FLOAT -i",primaryKeys "owner,deviceId, time,poorSignalLevel,meditationLevel, attentionLevel, EEGPowersDelta, EEGPowersTheta, EEGPowersLowAlpha, EEGPowersHighAlpha, EEGPowersLowBeta, EEGPowersHighBeta, EEGPowersLowGamma, EEGPowersMidGamma");
+      insert into table MindWaveSummaryData select meta_owner as owner,meta_deviceId as deviceId, cast(meta_time/1000 as BIGINT)as time ,poorSignalLevel,meditationLevel, attentionLevel, EEGPowersDelta, EEGPowersTheta, EEGPowersLowAlpha, EEGPowersHighAlpha, EEGPowersLowBeta, EEGPowersHighBeta, EEGPowersLowGamma, EEGPowersMidGamma from MindWaveData group by meta_owner,meta_deviceId, meta_time,poorSignalLevel,meditationLevel, attentionLevel, EEGPowersDelta, EEGPowersTheta, EEGPowersLowAlpha, EEGPowersHighAlpha, EEGPowersLowBeta, EEGPowersHighBeta, EEGPowersLowGamma, EEGPowersMidGamma;
+    </Script>
+  <CronExpression>0 0/5 * * * ?</CronExpression>
+</Analytics>

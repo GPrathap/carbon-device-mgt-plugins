@@ -35,8 +35,10 @@ function onRequest(context) {
         if (tokenPair) {
             token = tokenPair.accessToken;
         }
-        websocketEndpoint = websocketEndpoint + "/secured-websocket/org.wso2.iot.devices.temperature/1.0.0?"
-            + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type + "&websocketToken=" + token;
+        websocketEndpoint = websocketEndpoint + "/secured-websocket/org.wso2.iot.mindwave/1.0.0?"
+            + "deviceId=" + device.deviceIdentifier + "&deviceType=" + device.type;
+        var websocketToken= {'name':'websocket-token','value': token, 'path':'/', "maxAge":18000};
+        response.addCookie(websocketToken);
     }
     return {"device": device, "websocketEndpoint": websocketEndpoint};
 }

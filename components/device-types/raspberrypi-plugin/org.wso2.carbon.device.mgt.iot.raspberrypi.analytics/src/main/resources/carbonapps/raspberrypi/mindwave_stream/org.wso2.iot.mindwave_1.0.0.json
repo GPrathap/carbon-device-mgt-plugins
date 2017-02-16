@@ -1,0 +1,24 @@
+{
+  "name": "org.wso2.iot.mindwave",
+  "version": "1.0.0",
+  "nickName": "raspberrypi",
+  "description": "Temperature data received from the raspberrypi",
+  "metaData": [
+    {"name":"owner","type":"STRING"},
+    {"name":"deviceId","type":"STRING"},
+    {"name":"time","type":"LONG"}
+  ],
+  "payloadData": [
+    {"name": "poorSignalLevel","type": "FLOAT"},
+    {"name": "meditationLevel","type": "FLOAT"},
+    { "name": "attentionLevel","type": "FLOAT"},
+    { "name": "EEGPowersDelta","type": "FLOAT"},
+    { "name": "EEGPowersTheta","type": "FLOAT"},
+    { "name": "EEGPowersLowAlpha","type": "FLOAT"},
+    { "name": "EEGPowersHighAlpha","type": "FLOAT"},
+    { "name": "EEGPowersLowBeta","type": "FLOAT"},
+    { "name": "EEGPowersHighBeta","type": "FLOAT"},
+    { "name": "EEGPowersLowGamma","type": "FLOAT"},
+    { "name": "EEGPowersMidGamma","type": "FLOAT"}
+  ]
+}

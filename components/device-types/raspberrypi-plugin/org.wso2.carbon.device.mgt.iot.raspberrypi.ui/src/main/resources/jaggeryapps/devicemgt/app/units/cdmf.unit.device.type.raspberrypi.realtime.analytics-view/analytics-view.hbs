@@ -18,15 +18,51 @@
 {{unit "cdmf.unit.lib.rickshaw-graph"}}
 
 <div id="div-chart" data-websocketurl="{{websocketEndpoint}}">
-    <div class="chartWrapper" id="chartWrapper">
-        <div id="y_axis" class="custom_y_axis">Temperature</div>
-        <div class="legend_container">
-            <div id="smoother" title="Smoothing"></div>
-            <div id="legend"></div>
+
+    <div class="chartWrapper" id="chartWrapper-PoorSignalLevel">
+            <span id="span-title">PoorSignalLevel</span>
+            <div id="y_axis-PoorSignalLevel" class="custom_y_axis"></div>
+            <div class="legend_container">
+                <div id="smoother-PoorSignalLevel" title="Smoothing"></div>
+                <div id="legend-PoorSignalLevel"></div>
+            </div>
+            <div id="chart-PoorSignalLevel" class="custom_rickshaw_graph" ></div>
+            <div id="x_axis-PoorSignalLevel" class="custom_x_axis"></div>
+            <div id="slider-PoorSignalLevel" class="custom_slider"></div>
         </div>
-        <div id="chart" class="custom_rickshaw_graph"></div>
-        <div class="custom_x_axis">Time</div>
-    </div>
+        <div class="chartWrapper" id="chartWrapper-AttentionLevel">
+                <span id="span-title">AttentionLevel</span>
+                <div id="y_axis-AttentionLevel" class="custom_y_axis"></div>
+                <div class="legend_container">
+                    <div id="smoother-AttentionLevel" title="Smoothing"></div>
+                    <div id="legend-AttentionLevel"></div>
+                </div>
+                <div id="chart-AttentionLevel" class="custom_rickshaw_graph" ></div>
+                <div id="x_axis-AttentionLevel" class="custom_x_axis"></div>
+                <div id="slider-AttentionLevel" class="custom_slider"></div>
+         </div>
+         <div class="chartWrapper" id="chartWrapper-MeditationLevel">
+                <span id="span-title">MeditationLevel</span>
+                <div id="y_axis-MeditationLevel" class="custom_y_axis"></div>
+                <div class="legend_container">
+                    <div id="smoother-MeditationLevel" title="Smoothing"></div>
+                    <div id="legend-MeditationLevel"></div>
+                </div>
+                <div id="chart-MeditationLevel" class="custom_rickshaw_graph" ></div>
+                <div id="x_axis-MeditationLevel" class="custom_x_axis"></div>
+                <div id="slider-MeditationLevel" class="custom_slider"></div>
+         </div>
+         <div class="chartWrapper" id="chartWrapper-EEGPowers">
+                <span id="span-title">EEGPowers</span>
+                <div id="y_axis-EEGPowers" class="custom_y_axis"></div>
+                <div class="legend_container">
+                    <div id="smoother-EEGPowers" title="Smoothing"></div>
+                    <div id="legend-EEGPowers"></div>
+                </div>
+                <div id="chart-EEGPowers" class="custom_rickshaw_graph" ></div>
+                <div id="x_axis-EEGPowers" class="custom_x_axis"></div>
+                <div id="slider-EEGPowers" class="custom_slider"></div>
+         </div>
 </div>
 <a class="padding-left"
    href="{{@app.context}}/device/{{device.type}}/analytics?deviceId={{device.deviceIdentifier}}&deviceName={{device.name}}">
